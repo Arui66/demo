@@ -28,7 +28,7 @@
          return;
      else {
  
-         console.log(`本地脚本4-11 )`);       // console.log是输出信息的，可以在脚本日志中看到输出（打印）的信息
+         console.log(`xbox聚乐部 )`);       // console.log是输出信息的，可以在脚本日志中看到输出（打印）的信息
  
          console.log(`\n\n=========================================    \n脚本执行 - 北京时间(UTC+8)：${new Date(
              new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 +
