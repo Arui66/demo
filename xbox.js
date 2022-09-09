@@ -10,8 +10,8 @@
  * 
  */
 
- const jsname = "教程";
- const $ = Env(jsname);
+ const xbox = "xbox俱乐部";
+ const $ = Env(xbox);
  const notify = $.isNode() ? require('./sendNotify') : '';      // 这里是 node（青龙属于node环境）通知相关的
  const Notify = 1; //0为关闭通知，1为打开通知,默认为1
  const debug = 1; //0为关闭调试，1为打开调试,默认为0
@@ -65,17 +65,6 @@
              await signin();
              await $.wait(2 * 1000);
  
-             // 这里是开始做任务   
-             console.log('开始 yy');
-             await yyyy();
-             await $.wait(2 * 1000);
- 
- 
-             // 这里是开始做任务   
-             console.log('开始 zz');
-             await zzzzz();
-             await $.wait(2 * 1000);
- 
  
  
              await SendMsg(msg);    // 与发送通知有关系
@@ -83,9 +72,10 @@
      }
  
  })()
-     .catch((e) => console.logErr(e))
-     .finally(() => $.done())
+     .catch((e) => $.logErr(e))
+     .finally(() => $.done());
  
+
  
  
  
@@ -98,16 +88,13 @@
   function signin(timeout = 3 * 1000) {
      return new Promise((resolve) => {
          let url = {
-             url: `https://qualcomm.growthideadata.com/qualcomm-app/api/user/signIn?userId=${data[1]}`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
+             url: `https://h5.youzan.com/wscump/checkin/checkinV2.json?checkinId=1597464&app_id=&kdt_id=100464643&access_token=d0faa0e64da42dbab4f203b1a43e64`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
              headers: {            // headers 是请求体  可以直接用精简后的 hd  也就是服务器校验的部分，他需要啥，我们就给他啥  
- 
-                 "userId": data[1],
-                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-                 "Host": "qualcomm.growthideadata.com",
-                 "User-Agent": UA,
-                 "sessionKey": data[0],
-                 "Referer": "https://servicewechat.com/wx026c06df6adc5d06/176/page-frame.html",
-                 "Connection": "keep-alive"
+                 "Host": "h5.youzan.com",
+                 "Content-Type": "application/json",
+                 "User-Agent": "Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4297 MMWEBSDK/20220505 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.23.2160(0x28001757) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
+                 "extra-data": "{\"is_weapp\":1,\"sid\":\"YZ1017881685855793152YZw3QcTiPH\",\"version\":\"2.101.7.101\",\"client\":\"weapp\",\"bizEnv\":\"wsc\",\"uuid\":\"bKKNEEesAb1knjP1662723508264\",\"ftime\":1662723508264}",
+                 "referer": "https://servicewechat.com/wx7f4f694622875202/10/page-frame.html",
              },
              // body: '',       // 这是一个 get 请求，没有请求体 body   如果是 post 不要忘记他鸭！
  
