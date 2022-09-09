@@ -1,12 +1,12 @@
 /**
  * 教程 1
- * 地址： https://raw.githubusercontent.com/yml2213/template/master/jiaocheng.js
- * 
+ * xbox签到
+ * 感谢yml2213大佬的教程和模板~
  * 教程    这里是写脚本说明的地方
  * 本脚本仅用于学习使用请勿直接运行
- * 
+ * 作者:XiaoLuDaDa
  * ========= 青龙 =========
- * 变量格式：export jiaocheng_data=' xxxx & xxx @  xxxx & xxx '  多个账号用 @分割 
+ * 变量格式：export xboxtoken=' xxxx & xxx @  xxxx & xxx '  多个账号用 @分割 
  * 
  */
 
@@ -16,8 +16,8 @@
  const Notify = 1; //0为关闭通知，1为打开通知,默认为1
  const debug = 1; //0为关闭调试，1为打开调试,默认为0
  //////////////////////
- let jiaocheng_data = process.env.jiaocheng_data;               // 这里是 从青龙的 配置文件 读取你写的变量
- let jiaocheng_dataArr = [];
+ let xboxtoken = process.env.xboxtoken;               // 这里是 从青龙的 配置文件 读取你写的变量
+ let xboxtokenArr = [];
  let data = '';
  let msg = '';
  
@@ -36,20 +36,20 @@
  
          await wyy();
  
-         console.log(`\n=================== 共找到 ${jiaocheng_dataArr.length} 个账号 ===================`)
+         console.log(`\n=================== 共找到 ${xboxtokenArr.length} 个账号 ===================`)
  
          if (debug) {
-             console.log(`【debug】 这是你的全部账号数组:\n ${jiaocheng_dataArr}`);
+             console.log(`【debug】 这是你的全部账号数组:\n ${xboxtokenArr}`);
          }
  
  
-         for (let index = 0; index < jiaocheng_dataArr.length; index++) {
+         for (let index = 0; index < xboxtokenArr.length; index++) {
  
  
              let num = index + 1
              console.log(`\n========= 开始【第 ${num} 个账号】=========\n`)
  
-             data = jiaocheng_dataArr[index].split('&');      // 这里是分割你每个账号的每个小项   
+             data = xboxtokenArr[index].split('&');      // 这里是分割你每个账号的每个小项   
  
              if (debug) {
                  console.log(`\n 【debug】 这是你第 ${num} 账号信息:\n ${data}\n`);
@@ -82,7 +82,7 @@
  
  
  /**
-  * 签到  骁友会
+  * 签到  xbox
   * 下面我们来看看函数需要注意的东西吧
   */
   function signin(timeout = 3 * 1000) {
@@ -166,16 +166,16 @@
  //#region 固定代码 可以不管他
  // ============================================变量检查============================================ \\
  async function Envs() {
-     if (jiaocheng_data) {
-         if (jiaocheng_data.indexOf("@") != -1) {
-             jiaocheng_data.split("@").forEach((item) => {
-                 jiaocheng_dataArr.push(item);
+     if (xboxtoken) {
+         if (xboxtoken.indexOf("@") != -1) {
+             xboxtoken.split("@").forEach((item) => {
+                 xboxtokenArr.push(item);
              });
          } else {
-             jiaocheng_dataArr.push(jiaocheng_data);
+             xboxtokenArr.push(xboxtoken);
          }
      } else {
-         console.log(`\n 【${$.name}】：未填写变量 jiaocheng_data`)
+         console.log(`\n 【${$.name}】：未填写变量 xboxtoken`)
          return;
      }
  
