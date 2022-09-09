@@ -1,5 +1,5 @@
 /**
- * 教程 
+ * 教程 1
  * 地址： https://raw.githubusercontent.com/yml2213/template/master/jiaocheng.js
  * 
  * 教程    这里是写脚本说明的地方
