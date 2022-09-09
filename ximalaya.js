@@ -1,16 +1,15 @@
 /**
- * 教程 
- * 地址： https://raw.githubusercontent.com/yml2213/template/master/jiaocheng.js
+ * 感谢yml2213大佬的教程及其模板~
  * 
  * 教程    这里是写脚本说明的地方
  * 本脚本仅用于学习使用请勿直接运行
- * 
+ * 作者:XiaoLuDaDa
  * ========= 青龙 =========
- * 变量格式：export jiaocheng_data=' xxxx & xxx @  xxxx & xxx '  多个账号用 @分割 
- * 
+ * 变量格式：xmlyCookie=' xxx @ xxx @  xxxx'  多个账号用 @分割 
+ * 喜马拉雅签到
  */
 
- const xmlyqd = "教程";
+ const xmlyqd = "喜马拉雅签到";
  const $ = Env(xmlyqd);
  const notify = $.isNode() ? require('./sendNotify') : '';      // 这里是 node（青龙属于node环境）通知相关的
  const Notify = 1; //0为关闭通知，1为打开通知,默认为1
