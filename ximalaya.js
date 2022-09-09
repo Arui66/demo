@@ -10,16 +10,16 @@
  * 
  */
 
- const jsname = "教程";
- const $ = Env(jsname);
+ const xmlyqd = "教程";
+ const $ = Env(xmlyqd);
  const notify = $.isNode() ? require('./sendNotify') : '';      // 这里是 node（青龙属于node环境）通知相关的
  const Notify = 1; //0为关闭通知，1为打开通知,默认为1
  const debug = 1; //0为关闭调试，1为打开调试,默认为0
  //////////////////////
- let jiaocheng_data = process.env.jiaocheng_data;               // 这里是 从青龙的 配置文件 读取你写的变量
- let jiaocheng_dataArr = [];
- let data = '';
- let msg = '';
+ let xmlyCookie = process.env.xmlyCookie;               // 这里是 从青龙的 配置文件 读取你写的变量
+ let xmlyCookieArr = [];
+ let data = '';//返回
+ let msg = '';//返回
  
  
  !(async () => {
@@ -36,20 +36,20 @@
  
          await wyy();
  
-         console.log(`\n=================== 共找到 ${jiaocheng_dataArr.length} 个账号 ===================`)
+         console.log(`\n=================== 共找到 ${xmlyCookieArr.length} 个账号 ===================`)
  
          if (debug) {
-             console.log(`【debug】 这是你的全部账号数组:\n ${jiaocheng_dataArr}`);
+             console.log(`【debug】 这是你的全部账号数组:\n ${xmlyCookieArr}`);
          }
  
  
-         for (let index = 0; index < jiaocheng_dataArr.length; index++) {
+         for (let index = 0; index < xmlyCookieArr.length; index++) {
  
  
              let num = index + 1
              console.log(`\n========= 开始【第 ${num} 个账号】=========\n`)
  
-             data = jiaocheng_dataArr[index].split('&');      // 这里是分割你每个账号的每个小项   
+             data = xmlyCookieArr[index].split('&');      // 这里是分割你每个账号的每个小项   
  
              if (debug) {
                  console.log(`\n 【debug】 这是你第 ${num} 账号信息:\n ${data}\n`);
@@ -66,24 +66,15 @@
              await $.wait(2 * 1000);
  
              // 这里是开始做任务   
-             console.log('开始 yy');
-             await yyyy();
-             await $.wait(2 * 1000);
- 
- 
+
              // 这里是开始做任务   
-             console.log('开始 zz');
-             await zzzzz();
-             await $.wait(2 * 1000);
- 
- 
- 
+
              await SendMsg(msg);    // 与发送通知有关系
          }
      }
  
  })()
-     .catch((e) => console.logErr(e))
+     .catch((e) => $.logErr(e))
      .finally(() => $.done())
  
  
@@ -92,24 +83,20 @@
  
  
  /**
-  * 签到  骁友会
+  * 签到  喜马拉雅
   * 下面我们来看看函数需要注意的东西吧
   */
   function signin(timeout = 3 * 1000) {
-     return new Promise((resolve) => {
+     return new Promise((resolve, reject) => {
          let url = {
-             url: `https://qualcomm.growthideadata.com/qualcomm-app/api/user/signIn?userId=${data[1]}`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
+             url: `http://hybrid.ximalaya.com/web-activity/signIn/v2/signIn`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
              headers: {            // headers 是请求体  可以直接用精简后的 hd  也就是服务器校验的部分，他需要啥，我们就给他啥  
- 
-                 "userId": data[1],
-                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-                 "Host": "qualcomm.growthideadata.com",
-                 "User-Agent": UA,
-                 "sessionKey": data[0],
-                 "Referer": "https://servicewechat.com/wx026c06df6adc5d06/176/page-frame.html",
-                 "Connection": "keep-alive"
+                 "Content-Type": "application/json",
+                 "Cookie": xmlyCookie
              },
-             // body: '',       // 这是一个 get 请求，没有请求体 body   如果是 post 不要忘记他鸭！
+             body: JSON.stringify({
+                 "aid":87
+             }),       // 这是一个 post 请求，请求体 body   如果是 post 不要忘记他鸭！
  
          }
  
@@ -118,7 +105,7 @@
              console.log(JSON.stringify(url));
          }
  
-         $.get(url, async (error, response, data) => {     // 这是一个 get 请求 , 如果是 post  记得把这里改了 
+         $.post(url, async (error, response, data) => {     // 这是一个 get 请求 , 如果是 post  记得把这里改了 
              try {
                  if (debug) {
                      console.log(`\n\n【debug】===============这是 签到 返回data==============`);
@@ -126,19 +113,14 @@
                  }
  
                  let result = JSON.parse(data);
-                 if (result.code == 200) {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
+                 if (result.data.code == 0) {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
-                     console.log(`【签到】${result.message} 🎉 `)
-                     msg += `\n【签到】${result.message} 🎉` 
+                     console.log(`【签到】${result.data.msg} 🎉 `)
+                     msg += `\n【签到】${result.data.msg} 🎉` 
  
-                 } else if (result.code === 1) {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
+                 } else if (result.data.code === -2) {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
-                     console.log(`\n【签到】 失败 ,可能是:${result.message}!\n `)
-                     
- 
-                 } else if (result.code === 40001) {   // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
- 
-                     console.log(`\n【签到】 失败 ,可能是:${result.message}!\n `)
+                     console.log(`\n【签到】 失败 ,可能是:${result.data.msg}!\n `)
                      
  
                  } else {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
@@ -179,16 +161,16 @@
  //#region 固定代码 可以不管他
  // ============================================变量检查============================================ \\
  async function Envs() {
-     if (jiaocheng_data) {
-         if (jiaocheng_data.indexOf("@") != -1) {
-             jiaocheng_data.split("@").forEach((item) => {
-                 jiaocheng_dataArr.push(item);
+     if (xmlyCookie) {
+         if (xmlyCookie.indexOf("@") != -1) {
+             xmlyCookie.split("@").forEach((item) => {
+                 xmlyCookieArr.push(item);
              });
          } else {
-             jiaocheng_dataArr.push(jiaocheng_data);
+             xmlyCookieArr.push(xmlyCookie);
          }
      } else {
-         console.log(`\n 【${$.name}】：未填写变量 jiaocheng_data`)
+         console.log(`\n 【${$.name}】：未填写变量 xmlyCookie`)
          return;
      }
  
