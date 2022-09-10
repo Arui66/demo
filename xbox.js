@@ -10,7 +10,7 @@
  * 项目测试:小鹿
  * ========= 青龙 =========
  * 变量格式：export xboxtoken=' xxxx & xxx @  xxxx & xxx '  多个账号用 @分割 
- * 
+ * 当前变量测试 access_token&sid&uuid
  */
 
  const xbox = "xbox俱乐部";
