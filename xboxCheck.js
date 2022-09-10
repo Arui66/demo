@@ -10,14 +10,15 @@
  * 
  */
 
- const jsname = "教程";
- const $ = Env(jsname);
+ const xboxcheck = "XBOX仓库监控";
+ const $ = Env(xboxcheck);
  const notify = $.isNode() ? require('./sendNotify') : '';      // 这里是 node（青龙属于node环境）通知相关的
  const Notify = 1; //0为关闭通知，1为打开通知,默认为1
- const debug = 1; //0为关闭调试，1为打开调试,默认为0
+ const debug = 0; //0为关闭调试，1为打开调试,默认为0
  //////////////////////
- let jiaocheng_data = process.env.jiaocheng_data;               // 这里是 从青龙的 配置文件 读取你写的变量
- let jiaocheng_dataArr = [];
+ let xboxcheck_switch = process.env.xboxcheck_switch;               // 这里是 从青龙的 配置文件 读取你写的变量
+ let goodsid = process.env.goodsid
+ let xboxcheck_switchArr = [];
  let data = '';
  let msg = '';
  
@@ -36,20 +37,20 @@
  
          await wyy();
  
-         console.log(`\n=================== 共找到 ${jiaocheng_dataArr.length} 个账号 ===================`)
+         console.log(`\n=================== 共找到 ${xboxcheck_switchArr.length} 个账号 ===================`)
  
          if (debug) {
-             console.log(`【debug】 这是你的全部账号数组:\n ${jiaocheng_dataArr}`);
+             console.log(`【debug】 这是你的全部账号数组:\n ${xboxcheck_switchArr}`);
          }
  
  
-         for (let index = 0; index < jiaocheng_dataArr.length; index++) {
+         for (let index = 0; index < xboxcheck_switchArr.length; index++) {
  
  
              let num = index + 1
              console.log(`\n========= 开始【第 ${num} 个账号】=========\n`)
  
-             data = jiaocheng_dataArr[index].split('&');      // 这里是分割你每个账号的每个小项   
+             data = xboxcheck_switchArr[index].split('&');      // 这里是分割你每个账号的每个小项   
  
              if (debug) {
                  console.log(`\n 【debug】 这是你第 ${num} 账号信息:\n ${data}\n`);
@@ -65,18 +66,7 @@
              await signin();
              await $.wait(2 * 1000);
  
-             // 这里是开始做任务   
-             console.log('开始 yy');
-             await yyyy();
-             await $.wait(2 * 1000);
- 
- 
-             // 这里是开始做任务   
-             console.log('开始 zz');
-             await zzzzz();
-             await $.wait(2 * 1000);
- 
- 
+
  
              await SendMsg(msg);    // 与发送通知有关系
          }
@@ -122,18 +112,17 @@
                  }
  
                  let result = JSON.parse(data);
-                 if (result.code == 0) {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
+                 for (var listnum = 0; listnum <= 10; listnum++){
+                   if (result.data.list[listnum].item_card_opt.img_opt.mask == "") {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
-                     console.log(`【签到】${result.data.list[1].item_card_opt.img_opt.mask} Xbox橘色胸针有货🎉 `)
-                     msg += `\n【签到】该商品有货} 🎉` 
+                     console.log(`${result.data.list[listnum].item_card_opt.title_opt.title} 有货🎉 `)                    
  
                  } else {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
-                     console.log(`\n【签到】 失败 ❌ 了呢,可能是网络被外星人抓走了!\n `)
-                     
- 
+                  console.log(`${result.data.list[listnum].item_card_opt.title_opt.title} 无货🎉 `)
+                }
                  }
- 
+
              } catch (e) {
                  console.log(e)
              } finally {
@@ -165,16 +154,16 @@
  //#region 固定代码 可以不管他
  // ============================================变量检查============================================ \\
  async function Envs() {
-     if (jiaocheng_data) {
-         if (jiaocheng_data.indexOf("@") != -1) {
-             jiaocheng_data.split("@").forEach((item) => {
-                 jiaocheng_dataArr.push(item);
+     if (xboxcheck_switch) {
+         if (xboxcheck_switch.indexOf("@") != -1) {
+          xboxcheck_switch.split("@").forEach((item) => {
+            xboxcheck_switchArr.push(item);
              });
          } else {
-             jiaocheng_dataArr.push(jiaocheng_data);
+          xboxcheck_switchArr.push(xboxcheck_switch);
          }
      } else {
-         console.log(`\n 【${$.name}】：未填写变量 jiaocheng_data`)
+         console.log(`\n 【${$.name}】：未填写变量 xboxcheck_switch`)
          return;
      }
  
