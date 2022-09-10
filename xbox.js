@@ -119,11 +119,12 @@
                      console.log(`【签到】${result.msg} 🎉 `)
                      msg += `\n【签到】${result.msg} 🎉` 
  
-                 } else {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
+                 } else if (result.code == 1000030071){    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
-                     console.log(`\n【签到】 失败 ❌ 了呢,可能是网络被外星人抓走了!\n `)
+                     console.log(`\n【签到】 失败 ❌ ,具体原因是${result.msg}!\n `)
                      
- 
+                 } else {
+                     console.log('签到失败,原因未知,具体原因是${result.msg}')
                  }
  
              } catch (e) {
