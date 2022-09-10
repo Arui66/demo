@@ -67,6 +67,10 @@
              console.log('开始 xx');
              await signin();
              await $.wait(2 * 1000);
+
+             console.log('开始 xx');
+             await jifen();
+             await $.wait(2 * 1000);
  
  
  
@@ -142,7 +146,49 @@
  // 如果有更多的需求，直接复制上一个函数，改个名   然后稍微更改一下内容   就可以用了   
  // 不要忘记与上面的 函数调用对应起来鸭
  
+  function jifen(timeout = 3 * 1000) {
+     return new Promise((resolve) => {
+         let url = {
+             url: `https://h5.youzan.com/wscump/pointstore/getCustomerPoints.json`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
+             headers: {            // headers 是请求体  可以直接用精简后的 hd  也就是服务器校验的部分，他需要啥，我们就给他啥  
+                 "Host": "h5.youzan.com",
+                 "User-Agent": "Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4297 MMWEBSDK/20220505 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.23.2160(0x28001757) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
+                 "Cookie": "KDTWEAPPSESSIONID=YZ1017881685855793152YZw3QcTiPH;_kdt_id_=100464643"
+             },
+             //body:  // 这是一个 get 请求，没有请求体 body   如果是 post 不要忘记他鸭！
  
+         }
+ 
+         if (debug) {
+             console.log(`\n【debug】=============== 这是 查询 请求 url ===============`);
+             console.log(JSON.stringify(url));
+         }
+ 
+         $.get(url, async (error, response, data) => {     // 这是一个 get 请求 , 如果是 post  记得把这里改了 
+             try {
+                 if (debug) {
+                     console.log(`\n\n【debug】===============这是 查询 返回data==============`);
+                     console.log(data)
+                 }
+ 
+                 let result = JSON.parse(data);
+                 if (result.code == 0) {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
+ 
+                     console.log(`查询成功${result.data.currentAmount} 🎉 `)
+                     msg += `\n【查询】${result.data.currentAmount} 🎉` 
+ 
+                 } else {
+                     console.log('查询失败,原因未知,具体原因是未知')
+                 }
+ 
+             } catch (e) {
+                 console.log(e)
+             } finally {
+                 resolve();
+             }
+         }, timeout)
+     })
+ }
  
  
  
