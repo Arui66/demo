@@ -83,9 +83,8 @@
      }
  
  })()
-     .catch((e) => console.logErr(e))
-     .finally(() => $.done())
- 
+     .catch((e) => $.logErr(e))
+     .finally(() => $.done());
  
  
  
@@ -98,15 +97,12 @@
   function signin(timeout = 3 * 1000) {
      return new Promise((resolve) => {
          let url = {
-             url: `https://qualcomm.growthideadata.com/qualcomm-app/api/user/signIn?userId=${data[1]}`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
+             url: `https://h5.youzan.com/wscdeco/tee/goodsByTagAlias.json?alias=2ofluge5e4gub&kdt_id=100464643`,    // 这是请求的 url 可以直接用我们抓包、精简后的URL
              headers: {            // headers 是请求体  可以直接用精简后的 hd  也就是服务器校验的部分，他需要啥，我们就给他啥  
  
-                 "userId": data[1],
-                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-                 "Host": "qualcomm.growthideadata.com",
-                 "User-Agent": UA,
-                 "sessionKey": data[0],
-                 "Referer": "https://servicewechat.com/wx026c06df6adc5d06/176/page-frame.html",
+                 "Cookie": "nobody_sign=YZ1018117740279697408YZWwRDmLog;_kdt_id_=10046464;KDTSESSIONID=YZ1018117740279697408YZWwRDmLog",
+                 "Host": "h5.youzan.com",
+                 "User-Agent": "Mozilla/5.0 (Linux; Android 10; MI 8 Lite Build/QKQ1.190910.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4297 MMWEBSDK/20220505 Mobile Safari/537.36 MMWEBID/2585 MicroMessenger/8.0.23.2160(0x28001757) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android",
                  "Connection": "keep-alive"
              },
              // body: '',       // 这是一个 get 请求，没有请求体 body   如果是 post 不要忘记他鸭！
@@ -126,20 +122,10 @@
                  }
  
                  let result = JSON.parse(data);
-                 if (result.code == 200) {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
+                 if (result.code == 0) {        // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
-                     console.log(`【签到】${result.message} 🎉 `)
-                     msg += `\n【签到】${result.message} 🎉` 
- 
-                 } else if (result.code === 1) {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
- 
-                     console.log(`\n【签到】 失败 ,可能是:${result.message}!\n `)
-                     
- 
-                 } else if (result.code === 40001) {   // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
- 
-                     console.log(`\n【签到】 失败 ,可能是:${result.message}!\n `)
-                     
+                     console.log(`【签到】${result.data.list[1].item_card_opt.img_opt.mask} Xbox橘色胸针有货🎉 `)
+                     msg += `\n【签到】该商品有货} 🎉` 
  
                  } else {    // 这里是根据服务器返回的数据做判断  方便我们知道任务是否完成了
  
