@@ -83,8 +83,8 @@
      }
  
  })()
-     .catch((e) => console.logErr(e))
-     .finally(() => $.done())
+     .catch((e) => $.logErr(e))
+     .finally(() => $.done());
  
  
  
