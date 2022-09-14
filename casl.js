@@ -33,7 +33,7 @@
 	 let Version = `\n📌 本地脚本: V 0.0.1 `
 	 DoubleLog(`${Version}\n📌 🆙 更新内容: ${Change}`);
 	 // DoubleLog(`${thank}`);
-	 await wyy();
+	 //await wyy();  //默认关闭网易云API接口  如果失效则无法正常运行
 	 DoubleLog(`\n========== 共找到 ${ckArr.length} 个账号 ==========`);
 	 debugLog(`【debug】 这是你的账号数组:\n ${ckArr}`);
  }
