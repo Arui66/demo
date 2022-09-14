@@ -33,7 +33,7 @@
              new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 +
              8 * 60 * 60 * 1000).toLocaleString()} \n=========================================\n`);
  
-         await wyy();
+         //await wyy();  //默认关闭网易云API接口 失效导致脚本无法正常运行
  
          console.log(`\n=================== 共找到 ${xmlyCookieArr.length} 个账号 ===================`)
  
