@@ -45,7 +45,7 @@
 	 for (let index = 0; index < ckArr.length; index++) {
 		 let num = index + 1;
 		 DoubleLog(`\n-------- 开始【第 ${num} 个账号】--------`);
-		 ck = ckArr[index].split("&");
+		 ck = ckArr[index].split("&");             //账号分隔符,如果该账号有多个参数,且独立,则可以为CK[0],CK[1].都为同一账号.用&分割
 		 debugLog(`【debug】 这是你第 ${num} 账号信息:\n ${ck}`);
 		 await start();
 	 }
