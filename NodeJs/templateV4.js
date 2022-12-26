@@ -116,9 +116,8 @@ async function checkEnv() {
 }
 // =========================================== 不懂不要动 =========================================================
 // 网络请求 (get, post等)
-async function httpRequest(method, postUrlObject, name, timeout = 3) {
+async function httpRequest(method, url, name, timeout = 3) {
     return new Promise((resolve) => {
-        let url = postUrlObject;
         if (!name) {
             let tmp = arguments.callee.toString();
             let re = /function\s*(\w*)/i;
