@@ -60,12 +60,12 @@ class UserInfo {
     async user_info(name) { // 用户信息
         try {
             let options = {
-                method: "Get",
                 url: `${this.hostname}/get.php`,
-                headers: "",
-            };
+                headers: {
+                }
+            }
             //console.log(options);
-            let result = await httpRequest(options, name);
+            let result = await httpRequest("get", options, name);
             //console.log(result);
             if (result.errcode == 0) {
                 DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
