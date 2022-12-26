@@ -126,7 +126,6 @@ async function httpRequest(method, postUrlObject, name, timeout = 3) {
             name = matches[1];
         }
         if (debug) { console.log(`\n 【debug】=============== 这是 ${name} 请求 url ===============`); console.log(url); }
-
         $[method](
             url, async (err, resp, data) => {
                 try {
@@ -140,7 +139,6 @@ async function httpRequest(method, postUrlObject, name, timeout = 3) {
                             let result = data;
                             resolve(result);
                         }
-
                         function isJsonString(str) { if (typeof str == "string") { try { if (typeof JSON.parse(str) == "object") { return true } } catch (e) { return false } } return false }
                     } else {
                         let result = data;
