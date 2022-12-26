@@ -118,12 +118,7 @@ async function checkEnv() {
 // 网络请求 (get, post等)
 async function httpRequest(method, url, name, timeout = 3) {
     return new Promise((resolve) => {
-        if (!name) {
-            let tmp = arguments.callee.toString();
-            let re = /function\s*(\w*)/i;
-            let matches = re.exec(tmp);
-            name = matches[1];
-        }
+        if(!name){let tmp=arguments.callee.toString();let re=/function\s*(\w*)/i;let matches=re.exec(tmp);name=matches[1]}
         if (debug) { console.log(`\n 【debug】=============== 这是 ${name} 请求 url ===============`); console.log(url); }
         $[method](
             url, async (err, resp, data) => {
