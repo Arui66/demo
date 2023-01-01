@@ -57,23 +57,19 @@ class UserInfo {
     }
 
     async user_info() { // 用户信息
-        try {
-            let options = {
-                url: `${this.hostname}/get.php`,
-                headers: {
-                }
+        let options = {
+            url: `${this.hostname}/get.php`,
+            headers: {
             }
-            //console.log(options);
-            let result = await httpRequest("get", options);
+        }
+        //console.log(options);
+        let result = await httpRequest("get", options);
+        //console.log(result);
+        if (result.errcode == 0) {
+            DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
+        } else {
+            DoubleLog(`账号[${this.index}]  用户查询:失败 ❌ 了呢,原因未知！`);
             //console.log(result);
-            if (result.errcode == 0) {
-                DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
-            } else {
-                DoubleLog(`账号[${this.index}]  用户查询:失败 ❌ 了呢,原因未知！`);
-                console.log(result);
-            }
-        } catch (error) {
-            console.log(error);
         }
     }
 
@@ -115,44 +111,34 @@ async function checkEnv() {
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // 网络请求 (get, post等)
-async function httpRequest(method, url) {
+async function httpRequest(method, options) {
     return new Promise((resolve) => {
-        if (debug) { console.log(url); }
-        $[method](
-            url, async (err, resp, data) => {
-                try {
-                    if (err) {
-                        console.log(`${method}请求失败`);
-                        console.log(JSON.parse(err));
-                        $.logErr(err);
+        $[method](options, (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${method}请求失败`);
+                    console.log(JSON.parse(err));
+                    $.logErr(err);
+                    //throw new Error(err);
+                } else {
+                    //httpResult = data;
+                    //httpResponse = resp;
+                    if (data) {
+                        data = JSON.parse(data);
+                        //console.log(data);
+                        resolve(data)
                     } else {
-                        httpResult = data;
-                        httpResponse = resp;
-                        if (typeof data == "string") {
-                            if (isJsonString(data)) {
-                                let result = JSON.parse(data);
-                                if (debug) { console.log("返回体为json格式"); console.log(result); }
-                                resolve(result)
-                            } else {
-                                let result = data;
-                                if (debug) { console.log("返回体为非json格式"); console.log(result); }
-                                resolve(result);
-                            }
-                            function isJsonString(str) { if (typeof str == "string") { try { if (typeof JSON.parse(str) == "object") { return true } } catch (e) { return false } } return false }
-                        } else {
-                            let result = data;
-                            resolve(result)
-                        }
+                        console.log(`请求api返回数据为空，请检查自身原因`)
                     }
-                } catch (e) {
-                    console.log(err, resp);
-                    $.logErr(e, resp);
-                } finally {
-                    resolve();
                 }
-            },
-        );
-    });
+            } catch (e) {
+                //console.log(err, resp);
+                $.logErr(e, resp);
+            } finally {
+                resolve();
+            }
+        })
+    })
 }
 // 等待 X 秒
 function wait(n) {
