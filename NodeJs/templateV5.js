@@ -57,18 +57,22 @@ class UserInfo {
     }
 
     async user_info() {
-        let options = {
-            url: `${this.hostname}/get.php`,
-            headers: {}
-        }
-        //console.log(options);
-        let result = await httpRequest("get", options);
-        //console.log(result);
-        if (result.errcode == 0) {
-            DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
-        } else {
-            DoubleLog(`账号[${this.index}]  用户查询:失败 ❌ 了呢,原因未知！`);
+        try {
+            let options = {
+                url: `${this.hostname}/get.php`,
+                headers: {}
+            }
+            //console.log(options);
+            let result = await httpRequest("get", options);
             //console.log(result);
+            if (result.errcode == 0) {
+                DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
+            } else {
+                DoubleLog(`账号[${this.index}]  用户查询:失败 ❌ 了呢,原因未知！`);
+                //console.log(result);
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
 
