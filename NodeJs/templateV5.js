@@ -56,11 +56,10 @@ class UserInfo {
 
     }
 
-    async user_info() { // 用户信息
+    async user_info() {
         let options = {
             url: `${this.hostname}/get.php`,
-            headers: {
-            }
+            headers: {}
         }
         //console.log(options);
         let result = await httpRequest("get", options);
@@ -89,8 +88,7 @@ class UserInfo {
     .finally(() => $.done());
 
 
-// #region ********************************************************  固定代码  ********************************************************
-
+//********************************************************
 // 变量检查与处理
 async function checkEnv() {
     if (userCookie) {
@@ -132,7 +130,7 @@ async function httpRequest(method, options) {
                     }
                 }
             } catch (e) {
-                //console.log(err, resp);
+                //console.log(e, resp);
                 $.logErr(e, resp);
             } finally {
                 resolve();
@@ -145,7 +143,8 @@ function wait(n) {
     return new Promise(function (resolve) {
         setTimeout(resolve, n * 1000)
     })
-}// 双平台log输出
+}
+// 双平台log输出
 function DoubleLog(data) {
     if ($.isNode()) {
         if (data) {
@@ -156,7 +155,8 @@ function DoubleLog(data) {
         console.log(`${data}`);
         msg += `\n${data}`
     }
-}// 发送消息
+}
+// 发送消息
 async function SendMsg(message) {
     if (!message) return;
     if (Notify > 0) {
