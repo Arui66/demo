@@ -1,7 +1,7 @@
 /**
  * 演示模板
  * cron 10 7 * * *  demoV5.js
- * 
+ * 23/01/22 利用$.函数 &and  增加changeCode函数 将options转换为通用  优化httpRequest函数
  * ========= 青龙--配置文件 ===========
  * # 项目名称
  * export demo_data='token @ token'
@@ -36,7 +36,7 @@ async function start() {
     taskall = [];
     for (let user of userList) {
         taskall.push(await user.user_info());
-        //await wait(1); //延迟
+        await $.wait(1000); //延迟  1秒  可充分利用 $.环境函数
     }
     await Promise.all(taskall);
 
@@ -62,8 +62,9 @@ class UserInfo {
                 url: `${this.hostname}/get.php`,
                 headers: {}
             }
+            options = changeCode(options) //把某软件生成的代码(request或axios或jquery)转换为got通用
             //console.log(options);
-            let result = await httpRequest("get", options);
+            let result = await httpRequest(options);
             //console.log(result);
             if (result.errcode == 0) {
                 DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
@@ -112,22 +113,51 @@ async function checkEnv() {
     return console.log(`共找到${userCount}个账号`), true;//true == !0
 }
 /////////////////////////////////////////////////////////////////////////////////////
-// 网络请求 (get, post等)
-async function httpRequest(method, options) {
+function changeCode(oldoptions) {
+    let newoptions = new Object(),
+        urlTypeArr = ['qs', 'params'],
+        bodyTypeArr = ['body', 'data', 'form', 'formData']
+    for (let e in urlTypeArr) {
+        urlTypeArr[e] in oldoptions ? newoptions.url = changeUrl(urlTypeArr[e]) : newoptions.url = oldoptions.url
+    }
+    'content-type' in oldoptions.headers ? newoptions.headers = changeHeaders(oldoptions.headers) : newoptions.headers = oldoptions.headers
+    function changeUrl(type) {
+        url = oldoptions.url + '?'
+        for (let key in oldoptions[type]) { url += key + '=' + oldoptions[type][key] + '&' }
+        url = url.substring(0, url.length - 1)
+        return url
+    }
+    function changeHeaders(headers) {
+        let tmp = headers['content-type']
+        delete headers['content-type']
+        headers['Content-Type'] = tmp
+        return headers
+    }
+    for (let o in bodyTypeArr) {
+        if (bodyTypeArr[o] in oldoptions) {
+            (Object.prototype.toString.call(oldoptions[bodyTypeArr[o]]) === '[object Object]') ? newoptions.body = JSON.stringify(oldoptions[bodyTypeArr[o]]) : newoptions.body = oldoptions[bodyTypeArr[o]]
+        }
+    }
+    return newoptions
+}
+function httpRequest(options, method) {
+    //options = changeCode(options)
+    typeof (method) === 'undefined' ? ('body' in options ? method = 'post' : method = 'get') : method = method
     return new Promise((resolve) => {
         $[method](options, (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${method}请求失败`);
-                    console.log(JSON.parse(err));
+                    //console.log(JSON.parse(err));
                     $.logErr(err);
                     //throw new Error(err);
+                    //console.log(err);
                 } else {
                     //httpResult = data;
                     //httpResponse = resp;
                     if (data) {
-                        data = JSON.parse(data);
                         //console.log(data);
+                        data = JSON.parse(data);
                         resolve(data)
                     } else {
                         console.log(`请求api返回数据为空，请检查自身原因`)
