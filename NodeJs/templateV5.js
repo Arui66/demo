@@ -35,8 +35,10 @@ async function start() {
     console.log('\n================== 用户信息 ==================\n');
     taskall = [];
     for (let user of userList) {
-        taskall.push(await user.user_info());
-        await $.wait(1000); //延迟  1秒  可充分利用 $.环境函数
+        if (user.ckStatus) {
+            taskall.push(await user.user_info());
+            await $.wait(1000); //延迟  1秒  可充分利用 $.环境函数
+        }
     }
     await Promise.all(taskall);
 
@@ -53,6 +55,7 @@ class UserInfo {
         //this.data1 = ck[0]
         this.host = "echo.apipost.cn";
         this.hostname = "https://" + this.host;
+        this.ckStatus = true
 
     }
 
@@ -68,8 +71,12 @@ class UserInfo {
             //console.log(result);
             if (result.errcode == 0) {
                 DoubleLog(`账号[${this.index}]  欢迎用户: ${result.errcode}`);
+                this.ckStatus = true
+
             } else {
                 DoubleLog(`账号[${this.index}]  用户查询:失败 ❌ 了呢,原因未知！`);
+                this.ckStatus = false
+
                 //console.log(result);
             }
         } catch (e) {
