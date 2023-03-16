@@ -1,7 +1,7 @@
 /**
  * 演示模板
  * cron 10 7 * * *  demoV5.js
- * 23/01/22 利用$.函数 &and  增加changeCode函数 将options转换为通用  优化httpRequest函数
+ * 23/01/22 利用$.函数 &and
  * ========= 青龙--配置文件 ===========
  * # 项目名称
  * export demo_data='token @ token'
@@ -135,7 +135,6 @@ function httpRequest(options, method) {
                     //httpResult = data;
                     //httpResponse = resp;
                     if (data) {
-                        //console.log(data);
                         data = JSON.parse(data);
                         resolve(data)
                     } else {
