@@ -120,14 +120,12 @@ async function checkEnv() {
 }
 /////////////////////////////////////////////////////////////////////////////////////
 function httpRequest(options, method) {
-    //options = changeCode(options)
     typeof (method) === 'undefined' ? ('body' in options ? method = 'post' : method = 'get') : method = method
     return new Promise((resolve) => {
         $[method](options, (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${method}请求失败`);
-                    //console.log(JSON.parse(err));
                     $.logErr(err);
                     //throw new Error(err);
                     //console.log(err);
@@ -135,7 +133,14 @@ function httpRequest(options, method) {
                     //httpResult = data;
                     //httpResponse = resp;
                     if (data) {
-                        data = JSON.parse(data);
+                        //console.log(data);
+                        try {
+                            if (typeof JSON.parse(data) == 'object') {
+                                data = JSON.parse(data)
+                            }
+                        } catch (e) {
+                            data = data
+                        }
                         resolve(data)
                     } else {
                         console.log(`请求api返回数据为空，请检查自身原因`)
