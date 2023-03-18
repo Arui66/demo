@@ -134,13 +134,7 @@ function httpRequest(options, method) {
                     //httpResponse = resp;
                     if (data) {
                         //console.log(data);
-                        try {
-                            if (typeof JSON.parse(data) == 'object') {
-                                data = JSON.parse(data)
-                            }
-                        } catch (e) {
-                            data = data
-                        }
+                        typeof JSON.parse(data) == 'object' ? data = JSON.parse(data) : data = data
                         resolve(data)
                     } else {
                         console.log(`请求api返回数据为空，请检查自身原因`)
