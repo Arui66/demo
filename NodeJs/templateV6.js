@@ -32,7 +32,7 @@ let userCount = 0;
 
 async function start() {
 
-
+    await notice()
     console.log('\n================== 用户信息 ==================\n');
     taskall = [];
     for (let user of userList) {
@@ -149,6 +149,23 @@ function httpRequest(options, method) {
             }
         })
     })
+}
+async function notice() {
+    try {
+        let options = {
+            url: `https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/api/main/notice.json`,
+            headers: {},
+        }
+        //console.log(options);
+        let result = await httpRequest(options);
+        //console.log(result);
+        if (result) {
+            DoubleLog(`${result.notice}`);
+        } else {
+        }
+    } catch (e) {
+        console.log(e);
+    }
 }
 // 双平台log输出
 function DoubleLog(data) {
