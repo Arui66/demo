@@ -167,6 +167,20 @@ async function notice() {
         console.log(e);
     }
 }
+async hitokoto() { // 随机一言
+        try {
+            let options = {
+                url: 'https://v1.hitokoto.cn/',
+                headers: {}
+            };
+            //console.log(options);
+            let result = await httpRequest(options);
+            //console.log(result);
+            return result.hitokoto
+        } catch (error) {
+            console.log(error);
+        }
+    }
 // 双平台log输出
 function DoubleLog(data) {
     if ($.isNode()) {
