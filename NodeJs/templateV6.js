@@ -154,13 +154,23 @@ async function notice() {
     try {
         let options = {
             url: `https://ghproxy.com/https://raw.githubusercontent.com/smallfawn/api/main/notice.json`,
-            headers: {},
+            headers: {
+                'User-Agent': ''
+            },
         }
         //console.log(options);
         let result = await httpRequest(options);
         //console.log(result);
         if (result) {
-            DoubleLog(`${result.notice}`);
+            if ('notice' in result) {
+                DoubleLog(`${result.notice}`);
+            } else {
+                options.url = `https://gitee.com/smallfawn/api/raw/master/notice.json`
+                result = await httpRequest(options);
+                if ('notice' in result) {
+                    DoubleLog(`${result.notice}`);
+                }
+            }
         } else {
         }
     } catch (e) {
