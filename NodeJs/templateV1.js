@@ -183,7 +183,7 @@
   async function ScriptNotice() {      
 	 try {
 		 let url = {
-			 url: githubproxy + `https://raw.githubusercontent.com/zhaoshicong/QLScriptPublic/main/notice.json`,     
+			 url: githubproxy + ``,     
 		 };
 		 let result = await httpGet(url, `输出`);
 		 //console.log(result);      
